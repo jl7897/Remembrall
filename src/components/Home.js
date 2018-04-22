@@ -9,6 +9,7 @@ export default class Home extends Component {
       play_lists: [],
       auth: {},
     };
+    this.expandPlaylist = this.expandPlaylist.bind(this);
   }
 
   componentWillMount() {
@@ -18,14 +19,17 @@ export default class Home extends Component {
         console.log(response.data);
         this.setState({ play_lists: response.data.items });
       })
-      .then(() => {
-        axios.get(`${this.state.play_lists[2].tracks.href}?access_token=${this.props.location.state.token}`)
-          .then(data => console.log('tracks: ', data))
-          .catch(error => console.log(error));
-      })
       .catch((error) => {
         console.log(error);
       });
+  }
+
+  expandPlaylist(index) {
+    axios.get(`${this.state.play_lists[index].tracks.href}?access_token=${this.props.location.state.token}`)
+      .then((tracks) => {
+        console.log('the tracks of the playlist: ', tracks);
+      })
+      .catch(error => console.log(error));
   }
 
   render() {
@@ -33,7 +37,8 @@ export default class Home extends Component {
       <div>
       {this.state.auth.token ? null : <Redirect to='/'/>}
       <div>Logged in successfully, {this.state.auth.user.email}!</div>
-      {this.state.play_lists.map(item => <div key={item.name}>{item.name}</div>)}
+      {this.state.play_lists.map((item, index) =>
+        <div key={item.name} onClick={() => this.expandPlaylist(index)}>{item.name}</div>)}
       </div>
     );
   }
