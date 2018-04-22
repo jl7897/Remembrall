@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import axios from 'axios';
+import Home from './Home';
 import config from '../config';
 
 class App extends Component {
@@ -55,8 +55,6 @@ class App extends Component {
           //   current_user: { user },
           //   auth: { authToken },
           // });
-          console.log('User: ', user);
-          console.log('AuthToken: ', authToken);
           this.setState({
             current_user: user,
             auth: authToken,
@@ -75,26 +73,27 @@ class App extends Component {
   render() {
     return (
       <div>
-        <div>{this.state.redirect ? <Redirect to={{
-          pathname: '/home',
-          state: {
-            user: this.state.current_user,
-            token: this.state.auth,
-          },
-        }}/> : null}</div>
-            <p>
-              {this.state.authorized
-                ? 'Successfully authorized! Click below to Enter!'
-                : 'Just click the button below to authorize your Spotify account to start using React Spotify!'}
-            </p>
-            <button
-              type='button'
-              onClick={this.handleAuthFlow}
-            >
-              {this.state.authorized
-                ? 'Proceed to React Spotify'
-                : 'Sign in with Spotify'}
-            </button>
+        <div>
+        {this.state.redirect
+          ? <Home user={this.state.current_user} token={this.state.auth}/>
+          :
+            <div>
+              <p>
+                {this.state.authorized
+                  ? 'Successfully authorized! Click below to Enter!'
+                  : 'Just click the button below to authorize your Spotify account to start using React Spotify!'}
+              </p>
+              <button
+                type='button'
+                onClick={this.handleAuthFlow}
+              >
+                {this.state.authorized
+                  ? 'Proceed to React Spotify'
+                  : 'Sign in with Spotify'}
+              </button>
+            </div>
+          }
+        </div>
       </div>
     );
   }
