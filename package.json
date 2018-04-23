@@ -12,10 +12,12 @@
   "author": "Jake Lee",
   "license": "ISC",
   "dependencies": {
+    "antd": "^3.4.3",
     "axios": "^0.17.1",
     "babel-core": "^6.23.1",
     "babel-eslint": "^8.2.1",
     "babel-loader": "^6.3.2",
+    "babel-plugin-import": "^1.7.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.23.0",
     "body-parser": "^1.17.2",
