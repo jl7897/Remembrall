@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import axios from 'axios';
-import Home from './Home';
+
 import config from '../config';
 
 class App extends Component {
@@ -46,15 +47,7 @@ class App extends Component {
           this.setState({ profile: response.data });
           user = response.data;
         })
-        // need to import react router here and do push
-        // then should properly render
-        // could also do this by using Redirect and
-        // setting user and authtoken in state and passing there
         .then(() => {
-          // this.props.history.push('/home', {
-          //   current_user: { user },
-          //   auth: { authToken },
-          // });
           this.setState({
             current_user: user,
             auth: authToken,
@@ -63,7 +56,7 @@ class App extends Component {
         })
         .catch((error) => {
           console.log(error);
-          // window.location.assign(config.spotifyWebApiURL);
+          window.location.assign(config.spotifyWebApiURL);
         });
     } else {
       window.location.assign(config.spotifyWebApiURL);
@@ -75,7 +68,13 @@ class App extends Component {
       <div>
         <div>
         {this.state.redirect
-          ? <Home user={this.state.current_user} token={this.state.auth}/>
+          ? <Redirect to={{
+              pathname: '/home',
+              state: {
+                user: this.state.current_user,
+                token: this.state.auth,
+              },
+            }}/>
           :
             <div>
               <p>
